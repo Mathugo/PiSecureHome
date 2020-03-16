@@ -27,12 +27,14 @@ class Application:
     def run(self):
         self.getFrame()
         cv2.imshow('Video', self.frame)
+        self.img = Image(self.recognition)
+
         process_this_frame = True
         print("[*] Waiting recognition ..")
         print("[!] Press q to abort")
         while self.exit == False:
             self.getFrame()
-            self.img = Image(self.frame, self.recognition)
+            self.img.loadFrame(self.frame)
             if process_this_frame:
                 self.img.processRecognition()
             process_this_frame = not process_this_frame
