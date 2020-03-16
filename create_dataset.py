@@ -11,6 +11,9 @@ ap.add_argument("-c", "--cascade", required=True,
 	help = "path to where the face cascade resides")
 ap.add_argument("-o", "--output", required=True,
 	help="path to output directory")
+ap.add_argument("-n", "--name", required=True,
+  help="name for the personn's dataset")
+
 args = vars(ap.parse_args())
 
 # load OpenCV's Haar cascade for face detection from disk
@@ -47,12 +50,13 @@ class Image:
   
   def writeImg(self):
     global total
-    p = os.path.sep.join([args["output"], "{}.jpg".format(
-    str(total).zfill(5))])
+    p = os.path.sep.join([args["output"], "{}{}.jpg".format(args['name'], str(total).zfill(2))])
+    #p = os.path.sep.join([args["output"], "hugo{}.jpg".format(
+    #str(total).zfill(5))])
     cv2.imwrite(p, self.orig)
     total += 1
     
-def create_dataset(self):    
+def create_dataset():    
   while True:
     frame = vs.read()
     img = Image(frame)
@@ -71,3 +75,6 @@ def create_dataset(self):
   #cv2.destroyAllWindows()
   #vs.stop()
 
+
+
+create_dataset()
