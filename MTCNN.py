@@ -43,7 +43,7 @@ class Image:
           
 
 def main():
-    filename = "data/me.jpg"
+    filename = "data/hugo/hugo1.jpg"
     image1 = Image(filename)
     image1.detectFaces()
     #image1.draw_image_with_boxes()

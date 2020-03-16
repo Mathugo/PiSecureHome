@@ -47,7 +47,7 @@ class Image:
   
   def writeImg(self):
     global total
-    p = os.path.sep.join([args["output"], "{}.png".format(
+    p = os.path.sep.join([args["output"], "{}.jpg".format(
     str(total).zfill(5))])
     cv2.imwrite(p, self.orig)
     total += 1
