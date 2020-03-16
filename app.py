@@ -1,6 +1,4 @@
-import face_recognition
 import cv2
-from imutils.video import VideoStream
 import time
 from imageRecognition import *
 from image import *
@@ -14,11 +12,13 @@ class Application:
         self.video_capture = cv2.VideoCapture(0)
         time.sleep(2)
         self.recognition = ImgRecognition()
+
     def load(self, path_dataset):
         self.recognition.gatherData(path_dataset)
 
     def getFrame(self):
         ret, self.frame = self.video_capture.read()
+
     def keyWait(self):
         key = cv2.waitKey(1) & 0xFF
         if key == ord("q"):
@@ -38,17 +38,8 @@ class Application:
             process_this_frame = not process_this_frame
             self.img.display()
             self.keyWait()
+            
     def exitSafely(self):
         self.video_capture.release()
         cv2.destroyAllWindows()      
     
-def main():
-    path_hugo = "dataset/hugo/"
-    path_alex = "dataset/alex/"
-    app = Application()
-    app.load(path_hugo)
-    app.load(path_alex)
-    app.run()
-    app.exitSafely()
-
-main()    
