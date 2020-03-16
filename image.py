@@ -4,6 +4,11 @@ import face_recognition
 from speech import *
 from datetime import datetime
 import time
+from otherDetection import otherDetection
+import imutils
+
+path_prototxt = "dataset/object_detection/MobileNetSSD_deploy.prototxt.txt"
+path_model = "dataset/object_detection/MobileNetSSD_deploy.caffemodel"
 class Image:
     
     def __init__(self, reco):
@@ -11,6 +16,7 @@ class Image:
         self.delaySpeaking = 15 #Delay between each same speaking
         self.known_names = []
         self.delayNames = {}
+
 
         self.known_face_encodings = self.recognition.getKnownFaceEncoding()
         self.known_face_names = self.recognition.getKnownFaceNames()
@@ -46,7 +52,7 @@ class Image:
         for face_encoding in self.face_encodings:
             matches = face_recognition.compare_faces(self.known_face_encodings, face_encoding)
             name = "Unknown"
-            text_speech = "Une personne inconnu e été détectée"
+            text_speech = "Une personne inconnu a été détectée"
             # # If a match was found in known_face_encodings, just use the first one.
             # if True in matches:
             #     first_match_index = matches.index(True)
@@ -62,20 +68,24 @@ class Image:
                 print("[!] Personn : "+self.parsedName)
                 text_speech = self.parsedName+" est devant votre porte"
 
-            if name != "Unknown":                    
-                if (time.time() - self.delayNames[self.parsedName]) > self.delaySpeaking or self.delayNames[self.parsedName] == 0:
-                    s = Speech(text_speech, language_code='fr')
-                    s.start()
-                    self.delayNames[self.parsedName] = time.time()
-            else: #name eq unkown
-                if (time.time() - self.delayNames["Unknown"]) > self.delaySpeaking or self.delayNames["Unknown"] == 0:
-                    s = Speech(text_speech, language_code='fr')
-                    s.start()
-                    self.delayNames["Unknown"] = time.time()
-
+            self.speak(name, text_speech)
+           
             self.face_names.append(name)
+        self.draw_names()
 
-    def display(self):
+    def speak(self, name, text_speech):
+        if name != "Unknown":                    
+            if (time.time() - self.delayNames[self.parsedName]) > self.delaySpeaking or self.delayNames[self.parsedName] == 0:
+                s = Speech(text_speech, language_code='fr')
+                s.start()
+                self.delayNames[self.parsedName] = time.time()
+        else: #name eq unkown
+            if (time.time() - self.delayNames["Unknown"]) > self.delaySpeaking or self.delayNames["Unknown"] == 0:
+                s = Speech(text_speech, language_code='fr')
+                s.start()
+                self.delayNames["Unknown"] = time.time()
+
+    def draw_names(self):
         for (top, right, bottom, left), name in zip(self.face_locations, self.face_names):
                     # Scale back up face locations since the frame we detected in was scaled to 1/4 size
             top *= 4
@@ -88,8 +98,13 @@ class Image:
             # Draw a label with a name below the face
             cv2.rectangle(self.img, (left, bottom - 35), (right, bottom), (0, 0, 255), cv2.FILLED)
             font = cv2.FONT_HERSHEY_DUPLEX
-            cv2.putText(self.img, self.parsedName, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
-            cv2.imshow('Video', self.img)
+            if self.face_names != "Unknown":
+                cv2.putText(self.img, self.parsedName, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
+            else:
+                cv2.putText(self.img, "Unkown", (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
+    
+    def display(self):
+        cv2.imshow('Video', self.img)
 
     def parseName(self, name):
         name = name.replace(".\dataset\\", "")
@@ -101,3 +116,39 @@ class Image:
         name = name.split('/')
         name = name[1]
         return name
+
+    def detectOther(self):
+        self.limitConfidence = 0.3
+        self.objects = ["background", "aeroplane", "bicycle", "bird", "boat",
+	"bottle", "bus", "car", "cat", "chair", "cow", "diningtable",
+	"dog", "horse", "motorbike", "person", "pottedplant", "sheep",
+	"sofa", "train", "tvmonitor"]
+        self.colors = np.random.uniform(0, 255, size=(len(self.objects), 3))
+        self.net = cv2.dnn.readNetFromCaffe(path_prototxt, path_model)
+
+        (self.h, self.w) = self.img.shape[:2]
+        blob = cv2.dnn.blobFromImage(cv2.resize(self.img, (300, 300)),
+        0.007843, (300, 300), 127.5)
+        self.net.setInput(blob)
+
+        self.detections = self.net.forward()
+        self.draw_rect()
+
+    def draw_rect(self):
+        for i in np.arange(0, self.detections.shape[2]):
+            confidence = self.detections[0, 0, i, 2]
+            if confidence > self.limitConfidence:
+
+                idx = int(self.detections[0, 0, i, 1])  
+                box = self.detections[0, 0, i, 3:7] * np.array([self.w, self.h, self.w, self.h])
+                (startX, startY, endX, endY) = box.astype("int")
+                label = "{}: {:.2f}%".format(self.objects[idx],
+				confidence * 100)
+                cv2.rectangle(self.img, (startX, startY), (endX, endY),
+				self.colors[idx], 2)
+                y = startY - 15 if startY - 15 > 15 else startY + 15
+                cv2.putText(self.img, label, (startX, y),
+				cv2.FONT_HERSHEY_SIMPLEX, 0.5, self.colors[idx], 2)
+
+    def getFrame(self):
+        return self.img

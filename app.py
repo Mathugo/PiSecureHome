@@ -1,7 +1,11 @@
 import cv2
 import time
-from imageRecognition import *
+from faceRecognition import *
 from image import *
+from otherDetection import *
+
+path_prototxt = "dataset/object_detection/MobileNetSSD_deploy.prototxt.txt"
+path_model = "dataset/object_detection/MobileNetSSD_deploy.caffemodel"
 
 class Application:
 
@@ -11,7 +15,7 @@ class Application:
         self.exit = False
         self.video_capture = cv2.VideoCapture(0)
         time.sleep(2)
-        self.recognition = ImgRecognition()
+        self.recognition = FaceRecognition()
 
     def load(self, path_dataset):
         self.recognition.gatherData(path_dataset)
@@ -28,20 +32,27 @@ class Application:
         self.getFrame()
         cv2.imshow('Video', self.frame)
         self.img = Image(self.recognition)
-
         process_this_frame = True
         print("[*] Waiting recognition ..")
         print("[!] Press q to abort")
+
         while self.exit == False:
             self.getFrame()
             self.img.loadFrame(self.frame)
+
             if process_this_frame:
                 self.img.processRecognition()
+                self.img.detectOther()
+                self.img.display()
+
             process_this_frame = not process_this_frame
-            self.img.display()
+
             self.keyWait()
+
             
     def exitSafely(self):
+        print("[!] Exiting ..")
         self.video_capture.release()
-        cv2.destroyAllWindows()      
+        cv2.destroyAllWindows()
+        print("[*] Done")      
     
