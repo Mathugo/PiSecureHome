@@ -24,7 +24,7 @@ class Speech(Thread):
             s.connect(("8.8.8.8", 80))
             self.local_ip=s.getsockname()[0]
             s.close()
-            print("[*] local ip : "+local_ip)
+            print("[*] local ip : "+self.local_ip)
             self.castdevice = pychromecast.Chromecast(IP)
             self.castdevice.wait()
             self.vol_prec=self.castdevice.status.volume_level
