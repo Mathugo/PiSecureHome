@@ -4,6 +4,7 @@ from datetime import datetime
 from time import sleep
 import pyglet
 import os
+
 IP="192.168.0.16"
 
 class Speech(Thread):
@@ -56,7 +57,9 @@ class Speech(Thread):
             mc.play_media("http://"+self.local_ip+"/mp3_cache/"+self.filename, "audio/mp3")
             mc.block_until_active()
             mc.pause() #prepare audio and pause...
-            sleep(0.5)
+            sleep(1)
+            if self.vol_prec == 0:
+                self.vol_prec = 70
             self.castdevice.set_volume(self.vol_prec) #setting volume to precedent value
             sleep(0.2)
             print("[*] Playing mp3 ...")
