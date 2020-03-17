@@ -11,10 +11,10 @@ class Speech(Thread):
         Thread.__init__(self)
         self.text = text
         self.language_code = language_code
+        now = datetime.now()
         self.filename = now.strftime("%d-%m-%Y-%H-%M-%S.mp3")
         if os.name != "posix":
             self.tts = gTTS(self.text, lang=self.language_code)
-            now = datetime.now()
             self.filename = 'tmp/'+self.filename
         else:
             #server apache2 for google home support
