@@ -29,7 +29,7 @@ class FaceRecognition:
             else:
                 globals()['image_encoding_{}'.format(i)] = face_recognition.face_encodings(globals()['image_{}'.format(i)])[0]
                 self.known_face_encodings.append(globals()['image_encoding_{}'.format(i)])
-                self.names[i] = self.names[i].replace(self.path_dataset,'')
+                #self.names[i] = self.names[i].replace(self.path_dataset,'')
                 self.known_face_names.append(self.names[i])
                 
         print("[*] Done loading dataset")    
