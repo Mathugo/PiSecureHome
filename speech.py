@@ -20,7 +20,6 @@ class Speech(Thread):
             #server apache2 for google home support
             import socket
             import pychromecast
-            import time
             s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
             s.connect(("8.8.8.8", 80))
             self.local_ip=s.getsockname()[0]
@@ -57,13 +56,13 @@ class Speech(Thread):
             mc.play_media("http://"+self.local_ip+"/mp3_cache/"+self.filename, "audio/mp3")
             mc.block_until_active()
             mc.pause() #prepare audio and pause...
-            time.sleep(0.5)
+            sleep(0.5)
             self.castdevice.set_volume(self.vol_prec) #setting volume to precedent value
-            time.sleep(0.2)
+            sleep(0.2)
             print("[*] Playing mp3 ...")
             mc.play() #play the mp3
             while not mc.status.player_is_idle:
-                time.sleep(0.5)
+                sleep(0.5)
             mc.stop()
             self.castdevice.quit_app()
 
