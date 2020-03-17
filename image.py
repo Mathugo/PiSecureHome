@@ -120,7 +120,7 @@ class Image:
             return name
         else:
             name = name.split("/")
-            name = name[len(name)-1] 
+            name = name[len(name)-2] 
             return name
 
 
