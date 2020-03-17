@@ -43,7 +43,7 @@ class Speech(Thread):
                 pass
             if not os.path.isfile("/var/www/html/mp3_cache/"+self.filename):
                 print("[*] Creating file for text : "+self.text)
-                tts.save("/var/www/html/mp3_cache/"+self.filename)
+                self.tts.save("/var/www/html/mp3_cache/"+self.filename)
                 print("[*] Done")
 
     def play(self):
