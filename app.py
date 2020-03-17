@@ -42,7 +42,7 @@ class Application:
 
             if process_this_frame:
                 self.img.processRecognition()
-                self.img.detectOther()
+                #self.img.detectOther()
                 self.img.display()
 
             process_this_frame = not process_this_frame
