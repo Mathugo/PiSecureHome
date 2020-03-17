@@ -77,4 +77,3 @@ class Speech(Thread):
     def run(self):
         self.writeToDisk()
         self.play()
-        self.close()
