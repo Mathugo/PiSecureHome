@@ -108,15 +108,21 @@ class Image:
         cv2.imshow('Video', self.img)
 
     def parseName(self, name):
-        name = name.replace(".\dataset\\", "")
-        name = name.replace(".\dataset/","")
-        name = name.replace(".jpg",'')
-        name = name.replace(".png",'')
-        n = name.split('\\')
-        name = n[len(n)-2]
-        name = name.split('/')
-        name = name[1]
-        return name
+        if os.name != "posix":
+            name = name.replace(".\dataset\\", "")
+            name = name.replace(".\dataset/","")
+            name = name.replace(".jpg",'')
+            name = name.replace(".png",'')
+            n = name.split('\\')
+            name = n[len(n)-2]
+            name = name.split('/')
+            name = name[1]
+            return name
+        else:
+            name = name.split("/")
+            name = name[len(name)-1] 
+            return name
+
 
     def detectOther(self):
         self.limitConfidence = 0.3
