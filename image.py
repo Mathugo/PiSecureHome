@@ -32,7 +32,8 @@ class Image:
                 self.known_names.append(name)
 
     def initDelayFromNames(self):
-        for i in range(0, len(self.known_names)-1):
+        for i in range(0, len(self.known_names)):
+            print("Init 0 speaking "+self.known_names[i])
             self.delayNames[self.known_names[i]] = 0
         print("Adding unknown delay ..")
         self.delayNames['Unknown'] = 0    
