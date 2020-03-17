@@ -20,6 +20,7 @@ class Speech(Thread):
             #server apache2 for google home support
             import socket
             import pychromecast
+            import time
             s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
             s.connect(("8.8.8.8", 80))
             self.local_ip=s.getsockname()[0]
