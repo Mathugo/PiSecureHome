@@ -53,7 +53,7 @@ class Speech(Thread):
             sleep(music.duration) #prevent from killing
         else:
             mc = self.castdevice.media_controller
-            mc.play_media("http://"+local_ip+"/mp3_cache/"+self.filename, "audio/mp3")
+            mc.play_media("http://"+self.local_ip+"/mp3_cache/"+self.filename, "audio/mp3")
             mc.block_until_active()
             mc.pause() #prepare audio and pause...
             time.sleep(0.5)
