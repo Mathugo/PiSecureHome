@@ -25,7 +25,7 @@ print("[INFO] starting video stream...")
 vs = VideoStream(src=0).start()
 # vs = VideoStream(usePiCamera=True).start()
 time.sleep(2.0) # Warm up
-total = 0
+total = 10
 
 class Image:
   def __init__(self, frame):

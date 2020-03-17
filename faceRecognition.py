@@ -24,10 +24,11 @@ class FaceRecognition:
         for i in range(self.number_files):
             print("[!] Loading recognition file from "+str(self.list_of_files[i]))
             globals()['image_{}'.format(i)] = face_recognition.load_image_file(self.list_of_files[i])
-            if len(face_recognition.face_encodings(globals()['image_{}'.format(i)])) == 0:
+            f = face_recognition.face_encodings(globals()['image_{}'.format(i)])
+            if len(f) == 0:
                 print("[!] Face not detected on "+str(self.list_of_files[i]))
             else:
-                globals()['image_encoding_{}'.format(i)] = face_recognition.face_encodings(globals()['image_{}'.format(i)])[0]
+                globals()['image_encoding_{}'.format(i)] = f[0]
                 self.known_face_encodings.append(globals()['image_encoding_{}'.format(i)])
                 #self.names[i] = self.names[i].replace(self.path_dataset,'')
                 self.known_face_names.append(self.names[i])
