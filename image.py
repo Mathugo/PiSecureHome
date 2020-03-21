@@ -12,6 +12,8 @@ class Image:
     def __init__(self, args, data):
         self.args = args
         self.data = data
+        self.delaySpeaking = 10
+        self.delayNames = {}
         self.path_cascade = "dataset/cascade/haarcascade_frontalface_default.xml"
         if self.args["detection_method"] == "cascade":
             self.face_cascade = cv2.CascadeClassifier(self.path_cascade)
@@ -20,6 +22,7 @@ class Image:
     def setFrame(self, frame, rescale):
         self.frame = frame
         self.rescale = rescale
+    
     def detectFace(self):
         print("[INFO] recognizing faces...")
 
@@ -48,6 +51,7 @@ class Image:
             matches = face_recognition.compare_faces(self.data["encodings"],
             encoding)
             name = "Unknown"
+            speech_text = "Une personne inconnu a été détecté"
             # check to see if we have found a match
             if True in matches:
                 # find the indexes of all matched faces then initialize a
@@ -64,13 +68,22 @@ class Image:
                 # votes (note: in the event of an unlikely tie Python will
                 # select first entry in the dictionary)
                 name = max(counts, key=counts.get)
-                print("[!] Name detected :  "+name)
+                speech_text = name+" est devant votre porte"
+                print("[!] Name detected : "+name)
+
+            self.speak(speech_text, name)
             # update the list of names
+                
             self.names.append(name)
             if self.args["display"] == "yes":
                 self.draw_boxes(name)
                 self.display()
 
+    def speak(self, text_speech, name):
+        if name not in self.delayNames or (time.time() - self.delayNames.get(name)) > self.delaySpeaking:
+            s = Speech(text_speech, language_code='fr')
+            s.start()
+            self.delayNames[name] = time.time()
     def draw_boxes(self, name):
         for ((top, right, bottom, left), name) in zip(self.boxes, self.names):
 	    # draw the predicted face name on the image

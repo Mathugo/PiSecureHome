@@ -64,7 +64,6 @@ class Application:
             print("[INFO] elasped time: {:.2f}".format(self.fps.elapsed()))
             print("[INFO] approx. FPS: {:.2f}".format(self.fps.fps()))
 
-
             
     def exitSafely(self):
         print("[!] Exiting ..")
