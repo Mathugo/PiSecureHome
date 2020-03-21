@@ -5,5 +5,6 @@ def main():
     app = Application()
     app.run()
     app.exitSafely()
-         
+     #en = Encoding()
+     #en.run()    
 main()    
