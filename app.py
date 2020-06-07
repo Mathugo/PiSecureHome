@@ -34,7 +34,6 @@ class Application:
         self.writer= None
         time.sleep(2)
 
-
     def getFrame(self):
         self.frame = self.video_capture.read()
         self.frame = cv2.cvtColor(self.frame, cv2.COLOR_BGR2RGB)

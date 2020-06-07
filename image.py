@@ -84,6 +84,7 @@ class Image:
             s = Speech(text_speech, language_code='fr')
             s.start()
             self.delayNames[name] = time.time()
+            
     def draw_boxes(self, name):
         for ((top, right, bottom, left), name) in zip(self.boxes, self.names):
 	    # draw the predicted face name on the image

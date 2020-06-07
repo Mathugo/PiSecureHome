@@ -23,10 +23,11 @@ class Image:
             x, y , width, height = result['box'] # Get coordinates
             rect = Rectangle((x,y), width, height, fill=False, color='red') # create shape rectangle
             ax.add_patch(rect) #Draw the box
+            #pyplot.imshow(self.img[x: x+width, y:y+height])
+            #pyplot.savefig('face1.png')
             for key, value in result['keypoints'].items():
                 dot = Circle(value, radius=2, color='red')
                 ax.add_patch(dot)
-
         pyplot.show()    
     def draw_faces(self):
         for i in range(len(self.faces)):
@@ -38,14 +39,13 @@ class Image:
             # plot face
             self.faces_rect.append(self.img[y1:y2, y1:y2])
             pyplot.imshow(self.faces_rect[i])
+
         pyplot.show()    
 
-          
-
 def main():
-    filename = "data/hugo/hugo1.jpg"
+    filename = "dataset/hugo/hugo9.jpg"
     image1 = Image(filename)
     image1.detectFaces()
-    #image1.draw_image_with_boxes()
+    image1.draw_image_with_boxes()
     image1.draw_faces()
 main()        
