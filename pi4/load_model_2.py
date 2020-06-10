@@ -32,16 +32,16 @@ def classify_image(interpreter, image, top_k=1):
   ordered = np.argpartition(-output, top_k)
   return [(i, output[i]) for i in ordered[:top_k]]
 
-def main():
+def run_model(interpreter, path_model, image):
     #path_model = "HUGONETWORK_224_224_25_0.00001_16_13000.tflite"
-    path_model = "HUGONETWORK_224_224_50_0.0001_16_14000.tflite"
-    image_path = "TEST.jpg"
-    print("[!] Loading {} ..".format(str(path_model)))
-    interpreter = Interpreter(path_model)
-    print("[*] Done")
-    interpreter.allocate_tensors()
-    _, height, width, _ = interpreter.get_input_details()[0]['shape']
-    image = Image.open(image_path).resize((width, height))
+    #path_model = "HUGONETWORK_224_224_50_0.0001_16_14000.tflite"
+    #image_path = "TEST.jpg"
+    #print("[!] Loading {} ..".format(str(path_model)))
+    #interpreter = Interpreter(path_model)
+    #print("[*] Done")
+    #interpreter.allocate_tensors()
+    #_, height, width, _ = interpreter.get_input_details()[0]['shape']
+    #image = Image.open(image_path).resize((width, height))
 
     start_time = time.time()
     results = classify_image(interpreter, image)
@@ -49,4 +49,3 @@ def main():
     label_id, prob = results[0]
     print("[*] Label id {} Proba {} Elapsed time {} ms".format(label_id, prob, elapsed_ms))
 
-main()

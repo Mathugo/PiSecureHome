@@ -27,11 +27,13 @@ class Face:
         minNeighbors=3,
         minSize=(30, 30)
         )
+        print("Found {0} Faces!".format(len(self.faces)))
+
         if (len(self.faces)) >=1:
             return True
         else:
             return False
-        print("Found {0} Faces!".format(len(self.faces)))
+
     
     def draw_faces_name(self, name):
         for (x, y, w, h) in self.faces:
@@ -46,6 +48,7 @@ class Face:
             
             #cv2.rectangle(self.image, (x, y), (x + w, y + h), (0, 255, 0), 2)
             face_color = self.image[y:y + h, x:x + w]
+            face_color = cv2.resize(face_color, self.image_to_detect_size)
             #face_color = cv2.resize(face_color, self.image_to_detect_size) 
             #print("[INFO] Object found. Saving locally.") 
             return face_color
