@@ -9,7 +9,7 @@ from PIL import Image
 path="model.tflite"
 import time
 
-class Lite_Model:
+class LiteModel:
     def __init__(self, path):
         print("[!] Loading {} ..".format(str(path)))
         self.interpreter = tflite.Interpreter(path)

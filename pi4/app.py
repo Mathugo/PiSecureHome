@@ -6,7 +6,7 @@ import pickle
 import imutils
 from imutils.video import VideoStream, FPS
 import time
-from load_model import *
+from LiteModel import *
 
 class Application:
     def __init__(self):
@@ -20,7 +20,7 @@ class Application:
         self.args = vars(ap.parse_args()) 
         self.exit = False
         self.face_detector = Face(self.args["cascade"])
-        self.lite_model = Lite_Model(self.args["model"])
+        self.lite_model = LiteModel(self.args["model"])
 
         self.init_webcam()
         self.fps = FPS().start()
