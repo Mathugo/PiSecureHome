@@ -55,7 +55,8 @@ class Application:
         while self.exit == False:
             self.getFrame()
             self.image_reco.detectFace()
-            self.image_reco.checkNames()
+            #self.image_reco.checkNames()
+            self.image_reco.display()
             self.fps.update()
             self.keyWait()
             self.fps.stop()
