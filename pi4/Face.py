@@ -30,18 +30,18 @@ class Face:
         print("Found {0} Faces!".format(len(self.faces)))
 
         if (len(self.faces)) >=1:
-            return True
+            return len(self.faces)
         else:
             return False
 
     
-    def draw_faces_name(self, name):
+    def draw_faces_name(self, label):
         for (x, y, w, h) in self.faces:
             cv2.rectangle(self.image, (x, y), (x+w, y+h), (0, 255, 0), 2)
-            cv2.putText(self.image, name)
+            cv2.putText(self.image, label, (10,25), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0,255,0), 2)
 
-        status = cv2.imwrite('E:\ESIREM\Python\PiSecureHome\pi4\faces_detected.jpg', self.image)
-        print ("Image faces_detected.jpg written to filesystem: ",status)
+        #status = cv2.imwrite('E:\ESIREM\Python\PiSecureHome\pi4\faces_detected.jpg', self.image)
+        #print ("Image faces_detected.jpg written to filesystem: ",status)
 
     def extract_faces(self):
         for (x, y, w, h) in self.faces:

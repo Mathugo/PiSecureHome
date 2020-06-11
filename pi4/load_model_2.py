@@ -2,11 +2,9 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import argparse
 import io
 import time
 import numpy as np
-import picamera
 
 from PIL import Image
 from tflite_runtime.interpreter import Interpreter
@@ -48,4 +46,6 @@ def run_model(interpreter, path_model, image):
     elapsed_ms = (time.time() - start_time) * 1000
     label_id, prob = results[0]
     print("[*] Label id {} Proba {} Elapsed time {} ms".format(label_id, prob, elapsed_ms))
+    label = "Hugo" if label_id == 1 else "Unkown" #label id = 1 c'est hugo
+    return label, prob
 
