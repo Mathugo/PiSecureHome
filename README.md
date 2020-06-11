@@ -9,4 +9,4 @@ To download all the dependencies you can executes the file [requierement.sh](req
 
 ## Results
 
-![Screenshot](dataset/face_detected/screenshot.png)
+![Screenshot](https://github.com/Mathugo/PiSecureHome/blob/master/dataset/face_detected/hugo.png)
