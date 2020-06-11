@@ -6,3 +6,7 @@ Using a pre-trained deep learning model and opencv cascade detection, the raspbe
 ## Dependencies
 
 To download all the dependencies you can executes the file [requierement.sh](requierement.sh)
+
+## Results
+
+![Screenshot](dataset/face_detected/screenshot.png)
